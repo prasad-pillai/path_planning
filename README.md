@@ -1,6 +1,7 @@
 # CarND-Path-Planning-Project
-Self-Driving Car Engineer Nanodegree Program
-![drive_img](images/drive.png)
+Self-Driving Car Engineer Nanodegree Program.
+
+![drive_img](images/drive.jpg)
 
 ### Reflections
 The simulator sends the current and previous location os the car in the track. The details of other cars on the road are available in a sensor_fusion array in the json data send from the simulator. First we find is there is any car on the lane in which our car is running. If there are'nt any, then try to accelerate to a little less than the maximum speed which is 50mph. Else,
