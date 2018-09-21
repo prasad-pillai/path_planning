@@ -1,6 +1,24 @@
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
-   
+![drive_img](images/drive.png)
+
+### Reflections
+The simulator sends the current and previous location os the car in the track. The details of other cars on the road are available in a sensor_fusion array in the json data send from the simulator. First we find is there is any car on the lane in which our car is running. If there are'nt any, then try to accelerate to a little less than the maximum speed which is 50mph. Else,
+if there is any car in front at less than 35 meters then we decelerate. The acceleration and deceleration rate are set to a decent value by trail and error (code lines 188 to 200).
+
+A car in front of us less than 35 meters will make our car decelerate, also this is a situation were we should be looking for lane shift. To do so we check the lane in which our car is and check if the nearby lane is safe to shift to. Our function checkLaneSafety() does the safety checking (code lines: 39 to 79). If the lane is not safe the car continues in its track at a lower speed. If the lane is safe it changes lane (code lines: 205 to 240).
+
+##### Path Generation
+After deciding on which lane the car is going to go, We create (x, y) coordinate of waypoints ahead of our car using the corresponding frenet coordinates. From these waypoints, we use a spline function from the spline library to generate evenly spaced points for a smooth trajectory towards the set horizon.
+
+The function set_points() can be used to set the control points of the spline. The library then generates the spline in the memory. Now we can query the spline with our 'x' values and the spline will return the 'y' values.
+
+The car goes through each of these points every 0.02 secs, so the number of the points are calculated by the following equation for it to travel at the desired velocity.
+```cpp
+N = (target_dist/(0.02*ref_vel/2.24))
+```
+Now we supply the spline with evenly spaced 'N' number of x coordinates with a horison of 30. (code lines: 329 to 330). The spline will return the y coordinates thus making up our desired path to move. This path is passed back to the simulator.
+
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases/tag/T3_v1.2).
 
@@ -38,13 +56,13 @@ Here is the data provided from the Simulator to the C++ Program
 #### Previous path data given to the Planner
 
 //Note: Return the previous list but with processed points removed, can be a nice tool to show how far along
-the path has processed since last time. 
+the path has processed since last time.
 
 ["previous_path_x"] The previous list of x points previously given to the simulator
 
 ["previous_path_y"] The previous list of y points previously given to the simulator
 
-#### Previous path's end s and d values 
+#### Previous path's end s and d values
 
 ["end_path_s"] The previous list's last point's frenet s value
 
@@ -52,7 +70,7 @@ the path has processed since last time.
 
 #### Sensor Fusion Data, a list of all other car's attributes on the same side of the road. (No Noise)
 
-["sensor_fusion"] A 2d vector of cars and then that car's [car's unique ID, car's x position in map coordinates, car's y position in map coordinates, car's x velocity in m/s, car's y velocity in m/s, car's s position in frenet coordinates, car's d position in frenet coordinates. 
+["sensor_fusion"] A 2d vector of cars and then that car's [car's unique ID, car's x position in map coordinates, car's y position in map coordinates, car's x velocity in m/s, car's y velocity in m/s, car's s position in frenet coordinates, car's d position in frenet coordinates.
 
 ## Details
 
@@ -82,7 +100,7 @@ A really helpful resource for doing this project and creating smooth trajectorie
   * Run either `install-mac.sh` or `install-ubuntu.sh`.
   * If you install from source, checkout to commit `e94b6e1`, i.e.
     ```
-    git clone https://github.com/uWebSockets/uWebSockets 
+    git clone https://github.com/uWebSockets/uWebSockets
     cd uWebSockets
     git checkout e94b6e1
     ```
@@ -137,4 +155,3 @@ still be compilable with cmake and make./
 
 ## How to write a README
 A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
