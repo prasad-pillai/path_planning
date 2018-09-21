@@ -5,15 +5,6 @@
 #include <string>
 #include "utils.hpp"
 
-// print Lane name, given its index
-string getLaneInfo(double lane_num) {
-    if (lane_num == 0) { return "LEFT"; }
-    else if (lane_num == 1) { return "CENTER"; }
-    else if (lane_num == 2) { return "RIGHT"; }
-    else { return "NONE"; }
-}
-
-
 double findLane(double dist_from_center) {
     double lane = 1; // default CENTER lane
     if (dist_from_center > 0 && dist_from_center < 4) {
@@ -119,7 +110,8 @@ vector<double> getFrenet(double x, double y, double theta, const vector<double> 
 }
 
 // Transform from Frenet s,d coordinates to Cartesian x,y
-vector<double> getXY(double s, double d, const vector<double> maps_s, const vector<double> maps_x, const vector<double> maps_y) {
+vector<double>
+getXY(double s, double d, const vector<double> maps_s, const vector<double> maps_x, const vector<double> maps_y) {
     int prev_wp = -1;
 
     while (s > maps_s[prev_wp + 1] && (prev_wp < (int) (maps_s.size() - 1))) {
